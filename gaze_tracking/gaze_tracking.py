@@ -87,7 +87,13 @@ class GazeTracking(object):
             return (x, y)
 
     def normalize_horizontal(self, x):
-        return (x-0.53)/(0.68-0.53)
+        normalized_result = (x-0.53)/(0.68-0.53)
+        if normalized_result < 0:
+             return 0
+        if normalized_result > 1:
+             return 1
+        return normalized_result
+
     
     def horizontal_ratio(self):
         """Returns a number between 0.0 and 1.0 that indicates the
@@ -101,7 +107,12 @@ class GazeTracking(object):
             return self.normalize_horizontal(horizontal_gaze)
 
     def normalize_vertical(self, y):
-        return (y-0.69)/(0.795-0.69)
+        normalized_result = (y-0.69)/(0.795-0.69)
+        if normalized_result < 0:
+            return 0
+        if normalized_result > 1:
+            return 1
+        return normalized_result
     
     def vertical_ratio(self):
         """Returns a number between 0.0 and 1.0 that indicates the
