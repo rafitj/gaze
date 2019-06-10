@@ -5,7 +5,7 @@ gaze = GazeTracking()
 webcam = cv2.VideoCapture(0)
 hor_pts = []
 vert_pts = []
-
+heatmap_mode = False
 
 while True:
     # We get a new frame from the webcam
@@ -28,20 +28,31 @@ while True:
     elif gaze.is_center():
         text = "Looking center"
 
-    if (gaze.horizontal_ratio()!= None and gaze.vertical_ratio() != None):
-        hor_pts.append(int(1280*(1-gaze.horizontal_ratio())))
-        vert_pts.append(int(720*gaze.vertical_ratio()))
-
-    for x, y in zip(hor_pts, vert_pts):
-        cv2.circle(overlay, (x,y), 10, (0,0,255), 20)
-        alpha = 0.01
-        frame = cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0)
 
 
-    corner = [(1280,720),(0,720),(1280,0),(0,0)]
+    if (heatmap_mode):
 
-    for coord in corner:
-        cv2.circle(frame, coord, 50, (0,0,255), 5)
+        if (gaze.horizontal_ratio()!= None and gaze.vertical_ratio() != None):
+            x = int(1280*(1-gaze.horizontal_ratio()))
+            y = int(720*gaze.vertical_ratio())
+            hor_pts.append(x)
+            vert_pts.append(y)
+
+        for x, y in zip(hor_pts, vert_pts):
+            cv2.circle(overlay, (x,y), 10, (0,0,255), 20)
+            alpha = 0.01
+            frame = cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0)
+
+    
+    else:
+        if (gaze.horizontal_ratio()!= None and gaze.vertical_ratio() != None):
+            x = int(1280*(1-gaze.horizontal_ratio()))
+            y = int(720*gaze.vertical_ratio())
+            cv2.circle(overlay, (x,y), 20, (0,0,255), 30)
+            alpha = 0.7
+            frame = cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0)
+    
+
 
     horizontal_ratio = str(gaze.horizontal_ratio())
     vertical_ratio = str(gaze.vertical_ratio())

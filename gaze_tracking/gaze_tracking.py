@@ -15,8 +15,6 @@ class GazeTracking(object):
         self.frame = None
         self.eye_left = None
         self.eye_right = None
-        self.x_sensitivity = 1.5
-        self.y_sensitivity = 1.1
         self.calibration = Calibration()
 
         # pre-trained _face_detector model is used to detect faces
@@ -88,29 +86,37 @@ class GazeTracking(object):
             
             return (x, y)
 
+    def normalize_horizontal(self, x):
+        return (x-0.53)/(0.68-0.53)
+    
     def horizontal_ratio(self):
         """Returns a number between 0.0 and 1.0 that indicates the
         horizontal direction of the gaze. The extreme right is 0.0,
         the center is 0.5 and the extreme left is 1.0
         """
         if self.pupils_located:
-            pupil_l_x = self.eye_left.pupil.x * self.x_sensitivity
-            pupil_r_x = self.eye_right.pupil.x * self.x_sensitivity
+            pupil_l_x = self.eye_left.pupil.x
+            pupil_r_x = self.eye_right.pupil.x
             pupil_left = pupil_l_x / (self.eye_left.center[0] * 2 - 10)
             pupil_right = pupil_r_x / (self.eye_right.center[0] * 2 - 10)
-            return (pupil_left + pupil_right) / 2
+            horizontal_gaze = (pupil_left + pupil_right) / 2
+            return self.normalize_horizontal(horizontal_gaze)
 
+    def normalize_vertical(self, y):
+        return (y-0.69)/(0.795-0.69)
+    
     def vertical_ratio(self):
         """Returns a number between 0.0 and 1.0 that indicates the
         vertical direction of the gaze. The extreme top is 0.0,
         the center is 0.5 and the extreme bottom is 1.0
         """
         if self.pupils_located:
-            pupil_l_y = self.eye_left.pupil.y * self.y_sensitivity
-            pupil_r_y = self.eye_right.pupil.y * self.y_sensitivity
+            pupil_l_y = self.eye_left.pupil.y
+            pupil_r_y = self.eye_right.pupil.y
             pupil_left = pupil_l_y / (self.eye_left.center[1] * 2 - 10)
             pupil_right = pupil_r_y  / (self.eye_right.center[1] * 2 - 10)
-            return (pupil_left + pupil_right) / 2
+            vertical_gaze = (pupil_left + pupil_right) / 2
+            return self.normalize_vertical(vertical_gaze)
 
     def is_right(self):
         """Returns true if the user is looking to the right"""
