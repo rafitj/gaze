@@ -13,6 +13,8 @@ class Pupil(object):
         self.threshold = threshold
         self.x = None
         self.y = None
+        self.int_x = None
+        self.int_y = None
 
         self.detect_iris(eye_frame)
 
@@ -48,7 +50,9 @@ class Pupil(object):
 
         try:
             moments = cv2.moments(contours[-2])
-            self.x = int(moments['m10'] / moments['m00'])
-            self.y = int(moments['m01'] / moments['m00'])
+            self.x = (moments['m10'] / moments['m00'])
+            self.y = (moments['m01'] / moments['m00'])
+            self.int_x = int(moments['m10'] / moments['m00'])
+            self.int_y = int(moments['m01'] / moments['m00'])
         except (IndexError, ZeroDivisionError):
             pass

@@ -27,13 +27,15 @@ while True:
         text = "Looking left"
     elif gaze.is_center():
         text = "Looking center"
+
     if (gaze.horizontal_ratio()!= None and gaze.vertical_ratio() != None):
         hor_pts.append(int(1280*(1-gaze.horizontal_ratio())))
         vert_pts.append(int(720*gaze.vertical_ratio()))
 
     for x, y in zip(hor_pts, vert_pts):
         cv2.circle(overlay, (x,y), 10, (0,0,255), 20)
-        frame = cv2.addWeighted(overlay, 0.05, frame, 0.95, 0)
+        alpha = 0.01
+        frame = cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0)
 
 
     corner = [(1280,720),(0,720),(1280,0),(0,0)]
