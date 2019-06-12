@@ -1,0 +1,6 @@
+- Improve pupil detection algorithm 
+- Improve calibration algorithm in different settings and lightings
+- Create head tilt + gaze equations and algorithms for more versatile and precise results
+- Implement scaling algorithm with face tracking for distant and close faces
+- Implement multi gaze tracking 
+- Improve data collection and information
