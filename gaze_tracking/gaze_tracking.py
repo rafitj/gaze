@@ -107,7 +107,7 @@ class GazeTracking(object):
             return self.normalize_horizontal(horizontal_gaze)
 
     def normalize_vertical(self, y):
-        normalized_result = (y-0.69)/(0.795-0.69)
+        normalized_result = (y-0.56)/(0.73-0.56)
         if normalized_result < 0:
             return 0
         if normalized_result > 1:

@@ -59,7 +59,6 @@ class Calibration(object):
             trials[threshold] = Calibration.iris_size(iris_frame)
 
         best_threshold, iris_size = min(trials.items(), key=(lambda p: abs(p[1] - average_iris_size)))
-        print(best_threshold)
         return best_threshold
 
     def evaluate(self, eye_frame, side):
